@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<BrowseTracker_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="alex.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="41" topLine="0" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="bitsets.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="0" topLine="0" />
+		<BrowseMarks positions="28219,29632" />
+		<Book_Marks positions="3050,31892,20200" />
+	</File>
+	<File name="includes\alex.h" open="1" top="0" tabpos="5">
+		<Cursor position="2001" topLine="0" />
+		<BrowseMarks positions="2001" />
+		<Book_Marks positions="1546,2049" />
+	</File>
+	<File name="includes\bitsets.h" open="1" top="0" tabpos="6">
+		<Cursor position="6116" topLine="171" />
+	</File>
+	<File name="includes\defs.h" open="0" top="0" tabpos="6">
+		<Cursor position="498" topLine="0" />
+	</File>
+	<File name="includes\inputmanager.h" open="1" top="0" tabpos="8">
+		<Cursor position="17" topLine="0" />
+	</File>
+	<File name="inputmanager.cpp" open="1" top="1" tabpos="7">
+		<Cursor position="731" topLine="3" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="1249" topLine="0" />
+		<BrowseMarks positions="" />
+		<Book_Marks positions="" />
+	</File>
+	<File name="storage.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1165" topLine="57" />
+	</File>
+</BrowseTracker_layout_file>

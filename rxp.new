@@ -1,0 +1,123 @@
+;	\x25 = '%' (bug in pg)
+;	==================== MACRO'S: (zie ook pm.mac) ==========================
+						%:REST		{ ([^\r\n])* }
+						%:ID  		{ [A-Za-z_]([0-9A-Za-z_])* }
+						%:HEX 		{ [0-9A-Fa-f] }
+						%:ANYCHAR 	{ [^ ' " { } \x25 ] }
+						%:STR1 		{ " ([^"])* " }
+						%:STR2 		{ ' ([^'])* ' }
+						%:NM   		{ {SPC} ([0-9])+ {SPC} }
+                        %:SPCS      { (\s|\t)+ }
+;       ==================== TERMINAL SYMBOLS: ==================================
+1		space			%1:{SPCS} 		 ::if( SpaceCounts ) RETURN;
+;	backslashed characters (C-type):
+		E8	  2 L		%\\0([0-7])*	 ::Lexval.i=getoct(P_TEXT+2);RETURN;
+		E10   2 L		%\\[1-9]([0-9])* ::Lexval.i=getnum(P_TEXT+1);RETURN;
+		E16   2 L		%\\(x|X){HEX}+	 ::Lexval.i=gethex(P_TEXT+2);RETURN;
+		E1	  2 L		%\\[^\n]		 ::Lexval.i=backslash(P_TEXT+1);RETURN;
+;	string: delim. " or '. No newlines in a string.
+		STRING 2 L		%({STR1}|{STR2}) ::Lexval.p = P_TEXT; RETURN;
+;
+		MACDEF			%\${ID}{SPC}={REST} ::DefMacro(P_TEXT+1,P_LEN-1);\
+													 RETURN;
+;	macro substitution (invisible to syntax parser)
+		MACRO 			%${ID} 		 ::ExpandMacro( parstab );
+;	COUNTER: return an index to a COUNTFIELD
+		COUNT 3 N		%\{{NM}(,{NM})?\} ::Lexval.p=Counter(parstab,P_TEXT);\
+													 RETURN;
+;	Closure operators: (hoogste prioriteit)
+		*	  3 N		%\* 			 ::RETURN;
+		+	  3 N		%\+ 			 ::RETURN;
+		?	  3 N		%\? 			 ::RETURN;
+;
+		OR	  1 L		%\| 			 ::RETURN;
+		IS	  1 L		%\= 			 ::RETURN;	
+		(	  2 L		%\( 			 ::RETURN;
+		)	  2 L		%\) 			 ::RETURN;
+		[	  2 L		%\[ 			 ::RETURN;
+		]	  2 L		%\] 			 ::RETURN;
+		-	  2 L		%\- 			 ::RETURN;
+		.	  2 L		%\. 			 ::RETURN;
+		^	  2 L		%\^ 			 ::RETURN;
+		$	  2 L		%\$ 			 ::RETURN;
+		{	  2 L		%\{ 			 ::RETURN;
+		}	  2 L		%\} 			 ::RETURN;
+		/	  2 L		%\/ 			 ::RETURN;
+		CHAR  2 L		%{ANYCHAR}		 ::Lexval.i = \
+                               (IgnoreCase?tolower(*P_TEXT):*P_TEXT); RETURN;
+term-start 			%terminals:
+nonterm-start 		%nonterminals:
+prior			%[0-9]+[LRN]?
+%%
+program 			= 	terminals-list nonterminals-list
+					;
+terminals-list 		= 	term-start non-empty-tlist
+					| 	Empty
+					;
+non-empty-tlist		= 	non-empty-tlist tlistentry
+					|	tlistentry
+					;
+tlistentry			= 	terminalname priority regex action EOL
+                    |   commentline EOL
+					;
+terminalname		=	{ID}
+					| 	Empty
+					;
+priority	        =	prior
+					|	Empty
+					;
+action      		=	...
+					| 	Empty
+					;
+regex    			=   expr
+					|   ^ expr
+					|	expr $
+					|	MACDEF
+					|	ERROR
+					;
+expr				=	symbol
+					|   mkspace
+					|	STRING
+2 L 				|	expr expr
+					|	expr OR expr
+					|	( expr )
+					|	expr *
+					|	expr +
+					|	expr ?
+					|	expr COUNT
+					|	expr / expr
+					;
+symbol				=	teken
+					|	[ chars ]
+					|	.
+					;
+mkspace 			=  space
+					;
+teken				=	CHAR
+					|	E1
+					|	E10
+					|	E16 
+					;
+chars				=	chars crange
+					|
+					;
+crange				=	teken - teken
+					|	teken
+					|	^
+					;
+nonterminals-list   =   nonterm-start non-empty-ntlist
+                    |   Empty
+                    ;
+non-empty-ntlist    =   non-empty-ntlist productions
+                    |   productions
+                    ;
+productions         =   firstproduction altproductions
+                    |   firstproduction
+                    ;
+firstproduction     =   priority nt-id IS rule action
+                    ;
+altproductions      =   altproductions altproduction
+                    |   altproduction
+                    ;
+altproduction       =   priority OR rule action
+                    ;

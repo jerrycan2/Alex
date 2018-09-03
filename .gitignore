@@ -1,0 +1,9 @@
+# for Alex
+# System Files
+.DS_Store
+Thumbs.db
+bin
+debug_new
+obj
+*.[0-9].cpp
+*.[0-9].h

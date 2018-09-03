@@ -1,0 +1,131 @@
+1: make a directory containing the following files:
+    - pg.prg , the parser generator
+    - pm.prg , the pattern matcher
+    - attrib.o , containing symbol table, conversion routines etc.
+      ( or attrib.c )
+    - parse.h , auxiliary declarations used by all 3:alex,attrib & parse
+    - alex.o(c) , source file for the lexical analyzer
+    - parse.c , source file for the parser
+    - "name.suffix" , your file containing the syntax, and optionally
+      the lexical patterns which are used for compiling 'alex'.
+      '.p' is the default suffix and can be left out.
+    - optionally a makefile ( see .4 )
+
+2: run the parser generator: pg [ options ] name
+    if the lexical ptns are in "name.p", use the -l option to generate
+    "name.l" If your lexical definitions are in a separate file
+    already, leave out the -l option.
+    pg creates from the syntax file a C source file called 'pgtab.c',
+    containing the parsing tables and the attribute actions. This file
+    will be #included by 'parse.c'. The attribute actions are written in C
+    and can be appended to the syntax part in the .p file.
+    With the -i option pg creates a textfile "name.i" containing data
+    and table descriptions.
+    The -n option turns off the replacing of specific reduction actions by
+    default actions on 'any symbol'. 
+    -digits adds a number to var- and filenames (eg -2 produces pgtab2.c etc)
+    The -pdigits option is used to enter a new maximum number of productions
+    ( dft 256 )
+
+3: run the pattern generator: pm -c -l name.l
+    this generates the transition tables for the lexical analyzer and
+    the actions associated with them.
+
+4: now ( if name.c contains main() ) use either 'make parser'
+    or 'cc -f alex.c/o attrib.c/o parse.c ..etc' for compiling 'your.prg'
+     or 'make parse.prg' which uses alex.o
+
+ALEX:
+    The compiling of 'alex.c' produces an object file containing the
+    functions 'int Alex()' and 'void Ungettoken()'. Alex() delivers 
+    the token value of the lexemes found( or ERROR ), as described in the
+    pm input file, and the optional side-effects associated with them,
+    such as installing objects in the symbol table. Any values produced
+    by these actions appear in a pointer/long integer called 'Lexval' after
+    every call to Alex().
+    Alex uses a FILE * called 'Textfile' to an input file or stdin.
+    Alex() makes use of buffered-input which tries to read input chars
+    until it is presented with an EOF, ( it reloads on end-of-string )
+    In case EOF the function returns (int) 0 to the caller and sets 
+    'L_eof' to nonzero (-1).
+    This same EOF is expected by the parser, after reduction
+    by the Startproduction. An input routine may also return ERROR (int -1)
+    on EOF, as long as it also sets L_eof to TRUE.
+    (in short: 0 is always EOF, ERROR is EOF if L_eof is TRUE.)
+    If the inputfile is to be stdin, it may not be possible to return EOF,
+    so in this case it is up to the parser to decide when to stop asking
+    for input. One way to do it is by declaring one lexeme's token value
+    to be 0 ( carriage return, for instance ). This lexeme, when it appears
+    in the input, will act as EOF. A 0-lexeme cannot be used as terminal in a 
+    production-rule in the syntax part.
+    If a lexical error occurs, ERROR is returned.
+    Alex leaves the address of the input buffer in global 'char *Text',
+    with ints 'Begin' & 'End' indexing first char resp. last char + 1.
+    A line is kept in the buffer until its last lexeme is processed, unless
+    the lexeme stretches over more than 1 line. In this case, only the
+    lexeme is kept in the buffer, until the end is reached.
+
+    Ungettoken() is used by the parser to push tokens back on to the 
+    input queue for subsequent return by Alex().
+    It effectively acts like a stack of depth one, with no error signals.
+
+    Alex #includes the following files in its compilation:
+    - lextab.h , the DFA transition table produced by the -c option of pm.prg
+    - lexact.h , the attribute actions. produced by same.
+    - parse.h 
+    and the object file attrib.o must contain those actions.
+
+PARSER:
+    'parse.c' contains the function 'int parse()'. It returns TRUE ( 1 )
+    on succesfull completion of a parse, or else ERROR ( -1 ).
+    If file "name.p" contains a correct context-free syntax, plus description
+    of the semantic actions associated with productions, the command
+    "pg name" will create file 'pgtab.c'. This will be #included by 'parse.c'
+    and be linked with 'alex.o' ( + 'attrib.o' ) to produce the parser.
+    If pg.prg finds parsing action conflicts which cannot be resolved 
+    by the user-provided priorities and associativities, it reports these
+    on stdout. Its default rules always choose 'shift' in shift-reduce
+    conflicts, and the earliest-listed prod. in reduce-reduce confl.
+    A printout of several datastructures is generated by pg's -p option 
+    this prints the symbol table + a list of all items, state-by-state,
+    with their shift, reduce and goto actions.
+
+ATTRIBUTES:
+1: symbol table format:
+typedef struct symtab
+    {
+        char           *name;  /* ptr to name-string, /0 termin. */
+        struct symtab  *next;  /* linked list ptr to next entry */
+        int            *data;  /* ptr to any type of data */
+        int             scope; /* proc count + DELETED flag */
+        int             type;  /* type of data */
+    } TABENTRY, *TABPTR;
+
+    3 routines are provided:
+    - TABPTR insert( text, len ):
+      enters a name into the symbol table. text = ptr to begin, len = length
+      of the lexeme. ( Alex() delivers Text, Begin & End ). If the name
+      is already there, and the entry is not DELETED, it retns a pointer
+      to the old one, otherwise it links in a new TABENTRY and gives the 
+      ptr to that.
+    - TABPTR lookup( tabptr, txtptr, len )
+      see if a name entry exists, from 'tabptr' backwards ( entries are
+      inserted LIFO in a linked list )
+    - void delete( tabptr )
+      makes an entry inaccessible to 'lookup'
+
+    and a collective 'PTR install( text, len, lextype )'
+    which knows the following lextypes:
+    VAR_ID:
+      expects a char * to ascii name, int length, and uses insert()
+      to enter the name into the symbol table. Retns a TABPTR.
+    FLOAT_CONST:
+      allocate space for a double, convert (scanf) its value and
+      return a ptr to it.
+    INT_CONST:
+      like float, but a long int.
+    STRING_CONST:
+      expects a quoted string
+      allocates space for string minus quotes + \0 byte, copies it & rtns ptr.
+
+    ( definitions in parse.h )

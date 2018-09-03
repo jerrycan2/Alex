@@ -1,0 +1,208 @@
+# depslib dependency file v1.0
+1409455046 source:c:\mingw\64\projects\alex\alex.cpp
+	<iostream>
+	<fstream>
+	<windows.h>
+	<string>
+	<wchar.h>
+	"bitsets.h"
+	"alex.h"
+
+1407265231 c:\mingw\64\projects\alex\includes\bitsets.h
+	<string>
+	<iostream>
+	<iomanip>
+	<map>
+	"defs.h"
+	"storage.h"
+
+1399772143 c:\mingw\64\projects\alex\includes\defs.h
+
+1398753792 c:\mingw\64\projects\alex\includes\storage.h
+
+1409292530 c:\mingw\64\projects\alex\includes\alex.h
+	<wchar.h>
+	<iostream>
+	"bitsets.h"
+
+1408399090 source:c:\mingw\64\projects\alex\bitsets.cpp
+	<iostream>
+	"debug_new.h"
+	"bitsets.h"
+
+1399626661 source:c:\mingw\64\projects\alex\storage.cpp
+	<memory.h>
+	<string.h>
+	<stdlib.h>
+	<stdio.h>
+	<iostream>
+	"debug_new.h"
+	"storage.h"
+
+1381037542 c:\mingw\64\projects\alex\debug_new\nvwa\debug_new.h
+	<new>
+	<stdio.h>
+	"_nvwa.h"
+	"c++11.h"
+	<stdlib.h>
+
+1366636618 c:\mingw\64\projects\alex\debug_new\nvwa\_nvwa.h
+
+1389356168 c:\mingw\64\projects\alex\debug_new\nvwa\c++11.h
+
+1408397351 source:c:\mingw\64\projects\alex\main.cpp
+	<memory.h>
+	<iostream>
+	<string>
+	<time.h>
+	<stdlib.h>
+	"debug_new.h"
+	"bitsets.h"
+	"storage.h"
+	"alex.h"
+
+1399538760 source:c:\mingw\64\projects\alex\debug_new\debug_new.cpp
+	<new>
+	<assert.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<alloca.h>
+	<malloc.h>
+	"_nvwa.h"
+	"c++11.h"
+	"fast_mutex.h"
+	"static_assert.h"
+	"debug_new.h"
+
+1399538930 c:\mingw\64\projects\alex\debug_new\_nvwa.h
+
+1399538884 c:\mingw\64\projects\alex\debug_new\c++11.h
+
+1375417110 c:\mingw\64\projects\alex\debug_new\nvwa\fast_mutex.h
+	"_nvwa.h"
+	"c++11.h"
+	<stdio.h>
+	<stdlib.h>
+	<mutex>
+	<pthread.h>
+	<windows.h>
+
+1378554144 c:\mingw\64\projects\alex\debug_new\nvwa\static_assert.h
+	"c++11.h"
+
+1399538800 c:\mingw\64\projects\alex\debug_new\debug_new.h
+	<new>
+	<stdio.h>
+	"_nvwa.h"
+	"c++11.h"
+	<stdlib.h>
+
+1408402690 source:c:\users\jeroe\documents\mingw\alex\bitsets.cpp
+	<iostream>
+	"debug_new.h"
+	"bitsets.h"
+
+1381041142 c:\users\jeroe\documents\mingw\alex\debug_new\nvwa\debug_new.h
+	<new>
+	<stdio.h>
+	"_nvwa.h"
+	"c++11.h"
+	<stdlib.h>
+
+1366640218 c:\users\jeroe\documents\mingw\alex\debug_new\nvwa\_nvwa.h
+
+1389356168 c:\users\jeroe\documents\mingw\alex\debug_new\nvwa\c++11.h
+
+1407268831 c:\users\jeroe\documents\mingw\alex\includes\bitsets.h
+	<string>
+	<iostream>
+	<iomanip>
+	<map>
+	"defs.h"
+	"storage.h"
+
+1399775743 c:\users\jeroe\documents\mingw\alex\includes\defs.h
+
+1398757392 c:\users\jeroe\documents\mingw\alex\includes\storage.h
+
+1399542360 source:c:\users\jeroe\documents\mingw\alex\debug_new\debug_new.cpp
+	<new>
+	<assert.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<alloca.h>
+	<malloc.h>
+	"_nvwa.h"
+	"c++11.h"
+	"fast_mutex.h"
+	"static_assert.h"
+	"debug_new.h"
+
+1399542530 c:\users\jeroe\documents\mingw\alex\debug_new\_nvwa.h
+
+1399542484 c:\users\jeroe\documents\mingw\alex\debug_new\c++11.h
+
+1375420710 c:\users\jeroe\documents\mingw\alex\debug_new\nvwa\fast_mutex.h
+	"_nvwa.h"
+	"c++11.h"
+	<stdio.h>
+	<stdlib.h>
+	<mutex>
+	<pthread.h>
+	<windows.h>
+
+1378557744 c:\users\jeroe\documents\mingw\alex\debug_new\nvwa\static_assert.h
+	"c++11.h"
+
+1399542400 c:\users\jeroe\documents\mingw\alex\debug_new\debug_new.h
+	<new>
+	<stdio.h>
+	"_nvwa.h"
+	"c++11.h"
+	<stdlib.h>
+
+1408402690 source:c:\users\jeroe\documents\mingw\alex\main.cpp
+	<memory.h>
+	<iostream>
+	<string>
+	<time.h>
+	<stdlib.h>
+	"debug_new.h"
+	"bitsets.h"
+	"storage.h"
+	"alex.h"
+
+1493760246 c:\users\jeroe\documents\mingw\alex\includes\alex.h
+	<wchar.h>
+	<iostream>
+	"bitsets.h"
+
+1399630261 source:c:\users\jeroe\documents\mingw\alex\storage.cpp
+	<memory.h>
+	<string.h>
+	<stdlib.h>
+	<stdio.h>
+	<iostream>
+	"debug_new.h"
+	"storage.h"
+
+1506890745 source:c:\users\jeroe\documents\mingw\alex\alex.cpp
+	<iostream>
+	<fstream>
+	<windows.h>
+	<string>
+	<wchar.h>
+	"bitsets.h"
+	"alex.h"
+
+1528939561 source:c:\users\jeroe\documents\mingw\alex\inputmanager.cpp
+	<windows.h>
+	<fstream>
+	<iostream>
+	"inputmanager.h"
+
+1409458767 c:\users\jeroe\documents\mingw\alex\includes\inputmanager.h
+	"alex.h"
+
